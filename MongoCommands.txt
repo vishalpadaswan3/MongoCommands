@@ -1,0 +1,520 @@
+In MongoDB, we're using a **`Customers`** collection. Each document in the collection represents one customer. Here is the schema of the **`Customers`** collection:
+
+```
+{
+  "_id": ObjectId(), // a unique identifier created by MongoDB itself
+  "name": String,
+  "email": String,
+  "address": String,
+  "phone_number": String
+}
+```
+
+**_id**: This field is a unique identifier for the document. MongoDB automatically generates and assigns an ObjectId to this field when we create a new document.
+
+**name**: This field holds the name of the customer as a string.
+
+**email**: This field holds the email address of the customer as a string.
+
+**address**: This field holds the customer's address as a string.
+
+**phone_number**: This field holds the customer's phone number as a string.
+
+### **SQL:**
+
+In SQL, we're using a **`Customers`** table. Each row in the table represents one customer. Here is the schema of the **`Customers`** table:
+
+```
+CREATE TABLE Customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    address VARCHAR(255),
+    phone_number VARCHAR(50)
+);
+
+```
+
+**id**: This field is a unique identifier for the row. We manually assign a unique INT to this field when we create a new row. It's marked as the PRIMARY KEY.
+
+**name**: This field holds the name of the customer as a variable character string (VARCHAR) of length 100.
+
+**email**: This field holds the email address of the customer as a variable character string (VARCHAR) of length 100.
+
+**address**: This field holds the customer's address as a variable character string (VARCHAR) of length 255.
+
+**phone_number**: This field holds the customer's phone number as a variable character string (VARCHAR) of length 50.
+
+**Problem 1:**
+
+- **Prerequisite**: Understand creating tables in SQL / collections in MongoDB
+- **Problem**: Create a **`Customers`** table / collection with the following fields: **`id`** (unique identifier), **`name`**, **`email`**, **`address`**, and **`phone_number`**.
+
+SOLUTION:
+    
+    ```sql:
+    CREATE TABLE Customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    address VARCHAR(255),
+    phone_number VARCHAR(50)
+    );
+    ```
+
+    ```js:  
+    db.createCollection("Customers", {
+    validator: {
+    $jsonSchema: {
+    bsonType: "object",
+    required: ["name", "email", "address", "phone_number"],
+    properties: {
+    name: {
+    bsonType: "string",
+    description: "must be a string and is required"
+    },
+    email: {
+    bsonType: "string",
+    description: "must be a string and is required"
+    },
+    address: {
+    bsonType: "string",
+    description: "must be a string and is required"
+    },
+    phone_number: {
+    bsonType: "string",
+    description: "must be a string and is required"
+    }
+    }
+    }
+    }
+    });
+    ```
+
+**Problem 2:**
+
+- **Prerequisite**: Understand inserting data into SQL tables / MongoDB collections
+- **Problem**: Insert five rows / documents into the **`Customers`** table / collection with data of your choice.
+
+SOLUTION:
+
+```sql:
+INSERT INTO Customers (id, name, email, address, phone_number) 
+VALUES (1, 'John Doe', 'johndoe@gmail.com', '123 Main St, New York, NY 10001', '123-456-7890'),
+       (2, 'Jane Doe', 'jane@gmail.com', '456 Main St, New York, NY 10001', '123-456-7890'),
+       (3, 'Bob Smith', 'bob@gmail.com', '789 Main St, New York, NY 10001', '123-456-7890'),
+       (4, 'Alice Smith', 'alice@gmail.com', '101 Main St, New York, NY 10001', '123-456-7890'),
+       (5, 'Joe Smith', 'joe@gmail.com', '111 Main St, New York, NY 10001', '123-456-7890');
+
+```
+    
+    ```js:
+    db.customers.insertMany([
+    {"name": "John Doe", "email": "johndoe@gmail.com", "address": "123 Main St, New York, NY 10001", "phone_number": "123-456-7890"},
+    {"name": "Jane Doe", "email": "jane@gmail.com", "address": "456 Main St, New York, NY 10001", "phone_number": "123-456-7890"},
+    {"name": "Bob Smith", "email": "bob@gmail.com", "address": "789 Main St, New York, NY 10001", "phone_number": "123-456-7890"},
+    {"name": "Alice Smith", "email": "alice@gmail.com", "address": "101 Main St, New York, NY 10001", "phone_number": "123-456-7890"},
+    {"name": "Joe Smith", "email": "joe@gmail.com", "address": "111 Main St, New York, NY 10001", "phone_number": "123-456-7890"}
+    ]);
+    ```
+
+**Problem 3:**
+
+- **Prerequisite**: Understand basic data fetching in SQL / MongoDB
+- **Problem**: Write a query to fetch all data from the **`Customers`** table / collection.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers;
+```
+
+```js:
+db.Customers.find();
+```
+
+**Problem 4:**
+
+- **Prerequisite**: Understand how to select specific fields in SQL / MongoDB
+- **Problem**: Write a query to select only the **`name`** and **`email`** fields for all customers.
+
+- **Problem**: Write a query to select only the **`name`** and **`email`** fields for all customers.
+
+SOLUTION:
+
+```sql: 
+SELECT name, email FROM Customers;
+```
+
+```js:
+db.Customers.find({}, {name: 1, email: 1});
+```
+
+**Problem 5:**
+
+- **Prerequisite**: Understand basic WHERE clause in SQL / MongoDB's find method
+- **Problem**: Write a query to fetch the customer with the **`id`** of 3.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers WHERE id = 3;
+```
+
+```js:
+db.Customers.find({id: 3});
+```
+
+**Problem 6:**
+
+- **Prerequisite**: Understand using string patterns in SQL (LIKE clause) / using regex in MongoDB
+- **Problem**: Write a query to fetch all customers whose **`name`** starts with 'A'.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers WHERE name LIKE 'A%';
+```
+
+```js:
+db.Customers.find({name: /^A/});
+```
+
+**Problem 7:**
+
+- **Prerequisite**: Understand how to order data in SQL / MongoDB
+- **Problem**: Write a query to fetch all customers, ordered by **`name`** in descending order.
+
+- **Problem**: Write a query to fetch all customers, ordered by **`name`** in descending order.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers ORDER BY name DESC;
+```
+
+```js:
+db.Customers.find().sort({name: -1});
+```
+
+**Problem 8:**
+
+- **Prerequisite**: Understand data updating in SQL / MongoDB
+- **Problem**: Write a query to update the **`address`** of the customer with **`id`** 4.
+
+SOLUTION:
+
+```sql:
+UPDATE Customers SET address = '123 Main St, New York, NY 10001' WHERE id = 4;
+```
+
+```js:
+db.Customers.updateOne({id: 4}, {$set: {address: '123 Main St, New York, NY 10001'}});
+```
+
+**Problem 9:**
+
+- **Prerequisite**: Understand how to limit results in SQL / MongoDB
+- **Problem**: Write a query to fetch the top 3 customers when ordered by **`id`** in ascending order.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers ORDER BY id ASC LIMIT 3;
+```
+
+```js:
+db.Customers.find().sort({id: 1}).limit(3);
+```
+
+**Problem 10:**
+
+- **Prerequisite**: Understand data deletion in SQL / MongoDB
+- **Problem**: Write a query to delete the customer with **`id`** 2.
+
+SOLUTION:
+
+```sql:
+DELETE FROM Customers WHERE id = 2;
+```
+
+```js:
+db.Customers.deleteOne({id:  ObjectId("64a795e070e6104fc80bfd9c")});
+```
+
+**Problem 11:**
+
+- **Prerequisite**: Understand how to count rows / documents in SQL / MongoDB
+- **Problem**: Write a query to count the number of customers.
+
+SOLUTION:
+
+```sql: 
+SELECT COUNT(*) FROM Customers;
+```
+
+```js:
+db.Customers.count();
+```
+
+**Problem 12:**
+
+- **Prerequisite**: Understand how to skip rows / documents in SQL / MongoDB
+- **Problem**: Write a query to fetch all customers except the first two when ordered by **`id`** in ascending order.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers ORDER BY id ASC OFFSET 2;
+```
+
+```js:
+db.Customers.find().sort({id: 1}).skip(2);
+```
+
+
+**Problem 13:**
+
+- **Prerequisite**: Understand filtering with multiple conditions in SQL / MongoDB
+- **Problem**: Write a query to fetch all customers whose **`id`** is greater than 2 and **`name`** starts with 'B'.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers WHERE id > 2 AND name LIKE 'B%';
+```
+
+```js:
+
+db.Customers.find({id: {$gt: 2}, name: /^B/});
+```
+**Problem 14:**
+
+- **Prerequisite**: Understand how to use OR conditions in SQL / MongoDB
+- **Problem**: Write a query to fetch all customers whose **`id`** is less than 3 or **`name`** ends with 's'.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers WHERE id < 3 OR name LIKE '%s';
+```
+
+```js:
+db.Customers.find({$or: [{id: {$lt: 3}}, {name: /s$/}]});
+```
+
+**Problem 15:**
+
+- **Prerequisite**: Understand how to use NULL checks in SQL / MongoDB
+- **Problem**: Write a query to fetch all customers where the **`phone_number`** field is not set or is null.
+
+SOLUTION:
+
+```sql:
+SELECT * FROM Customers WHERE phone_number IS NULL;
+```
+
+```js:
+db.Customers.find({phone_number: null});
+```
+
+```
+
+
+//Set2
+17. SELECT * FROM restaurants;
+db.restaurants.find({});
+
+18. select * from restaurants order by average_rating desc;
+db.restaurants.find().sort({ average_rating: -1 });
+
+19. select * from restaurants where delivery_available = 1 And average_rating > 4.0; 
+db.restaurants.find({ delivery_available: 1, average_rating: { $gt: 4.0 } });
+
+20. select * from restaurants where cuisine_type is NULL;
+db.restaurants.find({ cuisine_type: { $exists: false } });
+
+21. select * from restaurants where location like "%New York%";
+db.restaurants.find({ location: /New York/ });
+
+22. select avg(average_rating) from restaurants;
+db.restaurants.aggregate([{ $group: { _id: null, average: { $avg: "$average_rating" } } }]);
+
+23.select * from restaurants order by average_rating desc limit 5;
+db.restaurants.find().sort({ average_rating: -1 }).limit(5);
+
+24. delete from restaurants where id = 3;
+db.restaurants.deleteOne({ _id: ObjectId("3") });
+
+// Set3
+
+25.db.createCollection("Rides", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["driver_id", "passenger_id", "start_location", "end_location", "distance", "ride_time", "fare"],
+      properties: {
+        driver_id: { bsonType: "objectId" },
+        passenger_id: { bsonType: "objectId" },
+        start_location: { bsonType: "string" },
+        end_location: { bsonType: "string" },
+        distance: { bsonType: "number" },
+        ride_time: { bsonType: "number" },
+        fare: { bsonType: "number" }
+      }
+    }
+  }
+})
+
+26.db.Rides.insertMany([
+  {
+    "driver_id": ObjectId("61346a82e25f4221dc9ad0a1"),
+    "passenger_id": ObjectId("61346a82e25f4221dc9ad0a2"),
+    "start_location": "New York",
+    "end_location": "Chicago",
+    "distance": 800,
+    "ride_time": 120,
+    "fare": 80.50
+  },
+  {
+    "driver_id": ObjectId("61346a82e25f4221dc9ad0a3"),
+    "passenger_id": ObjectId("61346a82e25f4221dc9ad0a4"),
+    "start_location": "San Francisco",
+    "end_location": "Los Angeles",
+    "distance": 400,
+    "ride_time": 60,
+    "fare": 50.25
+  }
+])
+
+27.db.Rides.find().sort({ fare: -1 })
+
+28.db.Rides.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalDistance: { $sum: "$distance" },
+      totalFare: { $sum: "$fare" }
+    }
+  }
+])
+
+//Set 4
+36.
+db.Rides.findOne({}, { _id: 0 }).sort({ fare: -1 })
+
+db.Rides.findOne({}, { _id: 0 }).sort({ fare: 1 })
+
+37.db.Rides.aggregate([
+  {
+    $group: {
+      _id: "$driver_id",
+      averageFare: { $avg: "$fare" },
+      averageDistance: { $avg: "$distance" }
+    }
+  }
+])
+
+38.db.Rides.aggregate([
+  {
+    $group: {
+      _id: "$driver_id",
+      totalRides: { $sum: 1 }
+    }
+  },
+  {
+    $match: {
+      totalRides: { $gt: 5 }
+    }
+  }
+])
+
+39.db.Rides.aggregate([
+  {
+    $lookup: {
+      from: "Drivers",
+      localField: "driver_id",
+      foreignField: "driver_id",
+      as: "driver"
+    }
+  },
+  {
+    $sort: { fare: -1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $project: {
+      driverName: { $arrayElemAt: ["$driver.name", 0] }
+    }
+  }
+])
+
+40.db.Rides.aggregate([
+  {
+    $group: {
+      _id: "$driver_id",
+      totalEarnings: { $sum: "$fare" }
+    }
+  },
+  {
+    $sort: { totalEarnings: -1 }
+  },
+  {
+    $limit: 3
+  }
+])
+
+
+41.db.Rides.find({
+  ride_date: {
+    $gte: new Date(new Date().setDate(new Date().getDate() - 7))
+  }
+})
+
+42.db.Rides.find({ end_location: { $exists: false } })
+
+43.db.Rides.aggregate([
+  {
+    $addFields: {
+      farePerMile: { $divide: ["$fare", "$distance"] }
+    }
+  },
+  {
+    $sort: { farePerMile: -1 }
+  },
+  {
+    $project: {
+      _id: 1,
+      farePerMile: 1
+    }
+  }
+])
+
+44.db.Rides.aggregate([
+  {
+    $lookup: {
+      from: "Drivers",
+      localField: "driver_id",
+      foreignField: "driver_id",
+      as: "driver"
+    }
+  },
+  {
+    $lookup: {
+      from: "Passengers",
+      localField: "passenger_id",
+      foreignField: "passenger_id",
+      as: "passenger"
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      driverName: { $arrayElemAt: ["$driver.name", 0] },
+      passengerName: { $arrayElemAt: ["$passenger.name", 0] }
+    }
+  }
+])
+
